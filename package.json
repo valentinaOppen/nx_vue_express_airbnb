@@ -19,6 +19,7 @@
     "tslib": "^2.3.0",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
+    "vue3-styled-components": "^1.2.1",
     "webpack": "^4.39.3"
   },
   "devDependencies": {

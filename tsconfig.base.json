@@ -14,7 +14,9 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@airbnb-vue-express/vue-components": ["libs/vue-components/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }

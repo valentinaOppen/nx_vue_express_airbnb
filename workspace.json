@@ -4,6 +4,7 @@
   "projects": {
     "api": "apps/api",
     "ui-vue": "apps/ui-vue",
-    "ui-vue-e2e": "apps/ui-vue-e2e"
+    "ui-vue-e2e": "apps/ui-vue-e2e",
+    "vue-components": "libs/vue-components"
   }
 }
