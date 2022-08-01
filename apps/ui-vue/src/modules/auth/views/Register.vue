@@ -1,3 +1,43 @@
+
+<script lang="ts" setup>
+  import { reactive, ref } from 'vue';
+  import * as Yup from 'yup';
+  import { Form, Field } from 'vee-validate';
+
+  import InputVue from '../../../components/StyledInput.vue';
+  import Title from '../../../components/Title.vue';
+  import FormWrapper from '../../../components/FormWrapper.vue';
+  import Button from '../../../components/Button.vue';
+
+  const schema = Yup.object().shape({
+    firstName: Yup.string()
+        .required('First Name is required'),
+    lastName: Yup.string()
+        .required('Last Name is required'),
+    username: Yup.string()
+        .required('Username is required'),
+    password: Yup.string()
+        .required('Password is required')
+        .min(6, 'Password must be at least 6 characters')
+});
+
+  const errors = ref()
+
+  const formRef = ref<HTMLFormElement | null>(null)
+  const form = reactive({
+    name: 'uno',
+    email: 'dos',
+    password: 'tres'
+  });
+
+  const onSubmit = async () => {
+    errors.value = {};
+    console.log("VALID", formRef.value?.checkValidity());
+    if (!formRef.value?.checkValidity()) return    
+  };
+
+</script>
+
 <template>
   <Title msg="Te damos la bienvenida a Airbnb"></Title>
 
@@ -8,7 +48,7 @@
   </ul>
 
   <form-wrapper>
-    <form @submit.prevent="onSubmit" ref="formRef">
+    <Form @submit.prevent="onSubmit" ref="formRef">
       <div data-validate="Ingrese su nombre">
         <input-vue
           v-model="form.name"
@@ -51,39 +91,10 @@
           text="¿Ya tienes cuenta?"
         ></Button>
       </div>
-    </form>
+    </Form>
   </form-wrapper>
 </template>
 
-<script lang="ts" setup>
-import { reactive, ref } from 'vue';
-import InputVue from '../../../components/StyledInput.vue';
-import Title from '../../../components/Title.vue';
-import FormWrapper from '../../../components/FormWrapper.vue';
-import Button from '../../../components/Button.vue';
 
-const errors = ref()
-
-const formRef = ref<HTMLFormElement | null>(null)
-const form = reactive({
-  name: 'uno',
-  email: 'dos',
-  password: 'tres',
-  // name: {type : String, required: true},
-  // email: {type : String, required: true},
-  // password: {type : String, required: true},
-});
-
-
-const onSubmit = async () => {
-  errors.value = {};
-  console.log("VALID", formRef.value?.checkValidity());
-  if (!formRef.value?.checkValidity()) return
-
-  console.log('ON SUBMIT', form);
-};
-
-
-</script>
 
 <style scoped></style>
