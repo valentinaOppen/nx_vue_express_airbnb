@@ -1,82 +1,106 @@
-
 <script lang="ts" setup>
-  import { reactive, ref } from 'vue';
-  import * as Yup from 'yup';
-  import { Form, Field } from 'vee-validate';
+import { reactive, ref } from 'vue';
+import * as Yup from 'yup';
+import { Form, Field } from 'vee-validate';
 
-  import InputVue from '../../../components/StyledInput.vue';
-  import Title from '../../../components/Title.vue';
-  import FormWrapper from '../../../components/FormWrapper.vue';
-  import Button from '../../../components/Button.vue';
+import Title from '../../../components/TitleStyled.vue';
+import FormWrapper from '../../../components/FormWrapperStyled.vue';
+import Button from '../../../components/ButtonStyled.vue';
+import router from '../../../router/index';
 
-  const schema = Yup.object().shape({
-    firstName: Yup.string()
-        .required('First Name is required'),
-    lastName: Yup.string()
-        .required('Last Name is required'),
-    username: Yup.string()
-        .required('Username is required'),
-    password: Yup.string()
-        .required('Password is required')
-        .min(6, 'Password must be at least 6 characters')
+const schema = Yup.object().shape({
+  firstName: Yup.string().required('First Name is required'),
+  lastName: Yup.string().required('Last Name is required'),
+  username: Yup.string().required('Username is required'),
+  email: Yup.string().email("Format invalid").required('Email is required'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters'),
 });
 
-  const errors = ref()
+const errors = ref();
 
-  const formRef = ref<HTMLFormElement | null>(null)
-  const form = reactive({
-    name: 'uno',
-    email: 'dos',
-    password: 'tres'
-  });
+const formRef = ref<HTMLFormElement | null>(null);
+const form = reactive({
+  name: 'uno',
+  email: 'dos',
+  password: 'tres',
+});
 
-  const onSubmit = async () => {
-    errors.value = {};
-    console.log("VALID", formRef.value?.checkValidity());
-    if (!formRef.value?.checkValidity()) return    
-  };
-
+const onSubmit = async (values) => {
+  const userStore = useUserStore();
+  const alertStore = useAlertStore(); 
+  try {
+    await userStore.register(values);
+    await router.push('/login');
+    alertStore.succes('Registration successful');    
+  }
+  catch(error) {
+    alertStore.error(error);
+  }
+};
 </script>
 
 <template>
   <Title msg="Te damos la bienvenida a Airbnb"></Title>
 
-  <ul class="error-messages">
-    <li v-for="(error, field) in errors" :key="field">
-      {{ field }} {{ error ? error[0] : '' }}
-    </li>
-  </ul>
-
   <form-wrapper>
-    <Form @submit.prevent="onSubmit" ref="formRef">
-      <div data-validate="Ingrese su nombre">
-        <input-vue
-          v-model="form.name"
+    <Form
+      @submit="onSubmit"
+      :validation-schema="schema"
+      v-slot="{ errors, isSubmitting }"
+    >
+      <div class="form-group">        
+        <Field
+          name="firstName"
+          type="text"
+          placeholder="First Name"
+          class="form-control"
+          :class="{ 'is-invalid': errors.firstName }"
+        />
+        <div class="invalid-feedback">{{ errors.firstName }}</div>
+      </div>
+      <div class="form-group">        
+        <Field
+          name="lastName"
+          type="text"
+          placeholder="Last Name"
+          class="form-control"
+          :class="{ 'is-invalid': errors.lastName }"
+        />
+        <div class="invalid-feedback">{{ errors.lastName }}</div>
+      </div>
+      <div class="form-group">        
+        <Field
           placeholder="Username"
-          required
-        ></input-vue>
-        <span class="focus-input100" data-placeholder="&#xe82a;"></span>
+          name="username"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errors.username }"
+        />
+        <div class="invalid-feedback">{{ errors.username }}</div>
       </div>
-
-      <div data-validate="Ingrese correo">
-        <input-vue
-          v-model="form.email"
+      <div class="form-group">        
+        <Field
           placeholder="Email"
-          required
-        ></input-vue>
-        <span class="focus-input100" data-placeholder="&#xe818;"></span>
+          name="email"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errors.email }"
+        />
+        <div class="invalid-feedback">{{ errors.email }}</div>
       </div>
-
-      <div data-validate="Ingrese contraseña">
-        <input-vue
-          v-model="form.password"
+      <div class="form-group">        
+        <Field
+          name="password"
           placeholder="Password"
-          required
           type="password"
-        ></input-vue>
-        <span class="focus-input100" data-placeholder="&#xe80f;"></span>
+          class="form-control"
+          :class="{ 'is-invalid': errors.password }"
+        />
+        <div class="invalid-feedback">{{ errors.password }}</div>
       </div>
-      <div class="flex flex-col gap-y-4 mt-4">
+     <div class="flex flex-col gap-y-4 mt-4">
         <Button
           color="primary"
           size="lg"
@@ -94,7 +118,5 @@
     </Form>
   </form-wrapper>
 </template>
-
-
 
 <style scoped></style>

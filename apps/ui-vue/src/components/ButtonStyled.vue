@@ -25,7 +25,7 @@ font-size:  ${props => (props.size === 'lg' ? '1.4rem' : '1rem')};
   margin: auto;
   background: ${props => (props.color === 'primary' ? "var(--color-primary)" : "white")};
   color: ${props => (props.color === 'primary' ? "white" : "var(--color-primary)")};
-  width: ${props => (props.size === 'lg' ? '90%' : '30%')};  
+  width: ${props => (props.size === 'lg' ? '100%' : '30%')};  
 `;
 
 </script>

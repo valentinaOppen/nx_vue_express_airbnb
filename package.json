@@ -21,10 +21,12 @@
     "mongoose": "^6.4.7",
     "postcss": "^7.0.39",
     "tslib": "^2.3.0",
+    "vee-validate": "^4.6.2",
     "vue": "^3.0.0",
     "vue-router": "^4.0.0-0",
     "vue3-styled-components": "^1.2.1",
-    "webpack": "^4.39.3"
+    "webpack": "^4.39.3",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@nrwl/cli": "14.4.3",

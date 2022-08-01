@@ -6,7 +6,7 @@
   import styled from 'vue3-styled-components';
   
   const Wrapper = styled.section`
-  width: 40%;
+  width: 35%;
   margin: 0px auto;
   padding: 1em;
   background: transparent;
