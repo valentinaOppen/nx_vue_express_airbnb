@@ -13,10 +13,11 @@ const StyledInput = styled.input`
   padding: 0.5em;
   margin: 0.5em;
   width:90%;
-  color: palevioletred;
+  /* color: rgb(248 113 113); */
+  border: solid 1px lightgrey;
   border-radius:10px;
   &:hover {
-    box-shadow: inset 1px 1px 2px red;
+    box-shadow: 0px 0px 3px 0px rgb(248 113 113)
   }
 `;
 

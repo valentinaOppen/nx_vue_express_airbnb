@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-primary: #f87171;
+    --color-secondary: 111 114 185;
+    /* ... */
+  }
+}
