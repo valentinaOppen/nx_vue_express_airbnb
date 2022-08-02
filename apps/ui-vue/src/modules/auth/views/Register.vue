@@ -7,39 +7,36 @@ import Title from '../../../components/TitleStyled.vue';
 import FormWrapper from '../../../components/FormWrapperStyled.vue';
 import Button from '../../../components/ButtonStyled.vue';
 import router from '../../../router/index';
+import { useAuthStore } from '../store/auth.store';
+import User from '../../../models/User.model';
+import Swal from 'vue-sweetalert2';
 
 const schema = Yup.object().shape({
-  firstName: Yup.string().required('First Name is required'),
-  lastName: Yup.string().required('Last Name is required'),
-  username: Yup.string().required('Username is required'),
-  email: Yup.string().email("Format invalid").required('Email is required'),
-  password: Yup.string()
-    .required('Password is required')
-    .min(6, 'Password must be at least 6 characters'),
+  // firstName: Yup.string().required('First Name is required'),
+  // lastName: Yup.string().required('Last Name is required'),
+  // username: Yup.string().required('Username is required'),
+  // email: Yup.string().email("Format invalid").required('Email is required'),
+  // password: Yup.string()
+  //   .required('Password is required')
+  //   .min(6, 'Password must be at least 6 characters'),
 });
 
-const errors = ref();
 
-const formRef = ref<HTMLFormElement | null>(null);
-const form = reactive({
-  name: 'uno',
-  email: 'dos',
-  password: 'tres',
-});
-
-const onSubmit = async (values) => {
-  const userStore = useUserStore();
-  const alertStore = useAlertStore(); 
+const onSubmit = async (values:any) => {
+  const authStore = useAuthStore();  
   try {
-    await userStore.register(values);
+    await authStore.register(values);
     await router.push('/login');
-    alertStore.succes('Registration successful');    
+    Swal.bind('sdofij');
   }
   catch(error) {
-    alertStore.error(error);
+    console.log("ERROR este error");
+    Swal.bind('error');
   }
 };
 </script>
+
+npx nx serve ui-vue
 
 <template>
   <Title msg="Te damos la bienvenida a Airbnb"></Title>
@@ -106,7 +103,7 @@ const onSubmit = async (values) => {
           size="lg"
           type="submit"
           text="Crear cuenta"
-          :disabled="!form.email || !form.password"
+          :disabled="isSubmitting"
         ></Button>
         <Button
           color="secondary"

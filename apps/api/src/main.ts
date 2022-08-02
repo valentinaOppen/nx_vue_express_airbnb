@@ -1,4 +1,6 @@
+import { NextFunction, Request, Response } from 'express';
 import { Router } from 'express';
+import HttpException from './app/models/http-exception.model';
 /**
  * This is not a production server yet!
  * This is only a minimal backend to get started.
@@ -16,11 +18,11 @@ app.use(cors());
 app.use(express.json()); 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cookieSession({
-  name:'airbnb',
-  secret: 'COOKIE_SECRET',
-  httpOnly: true
-}));
+// app.use(cookieSession({
+//   name:'airbnb',
+//   secret: 'COOKIE_SECRET',
+//   httpOnly: true
+// }));
 
 const db = require('./app/models');
 db.mongoose.connect('mongodb+srv://voppen:mongo20221@airbnb.2d1w9.mongodb.net/?retryWrites=true&w=majority')
@@ -39,10 +41,21 @@ app.get('/api', (req, res) => {
 const userRoutes:Router = require('./routes/user.routes');
 app.use('/user', userRoutes);
 
-app.use(function (req, res, next) {
-  console.log('Time:', Date.now());
-  next();
+/* eslint-disable */
+app.use((err: Error | HttpException, req: Request, res: Response, next: NextFunction) => {
+  // @ts-ignore
+  if (err && err.errorCode) {
+    // @ts-ignore
+    res.status(err.errorCode).json(err.message);
+  } else if (err) {
+    res.status(500).json(err.message);
+  }
 });
+
+// app.use(function (req, res, next) {
+//   console.log('Time:', Date.now());
+//   next();
+// });
 
 const port = process.env.port || 3333;
 const server = app.listen(port, () => {

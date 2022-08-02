@@ -14,10 +14,10 @@ function request(method:string) {
             headers: authHeader(url)
         };
         if (body) {
-          // //@ts-ignore
-          //   requestOptions.headers['Content-Type'] = 'application/json';
-          //   //@ts-ignore
-          //   requestOptions.body = JSON.stringify(body);
+          //@ts-ignore
+            requestOptions.headers['Content-Type'] = 'application/json';
+            //@ts-ignore
+            requestOptions.body = JSON.stringify(body);
         }
         return fetch(url, requestOptions).then(handleResponse);
     }
