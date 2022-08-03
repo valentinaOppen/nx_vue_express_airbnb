@@ -38,8 +38,8 @@ app.get('/api', (req, res) => {
   res.send({ message: 'Welcome to api!' });
 });
 
-const userRoutes:Router = require('./routes/user.routes');
-app.use('/user', userRoutes);
+const authRoutes:Router = require('./routes/auth.routes');
+app.use('/user', authRoutes);
 
 /* eslint-disable */
 app.use((err: Error | HttpException, req: Request, res: Response, next: NextFunction) => {
