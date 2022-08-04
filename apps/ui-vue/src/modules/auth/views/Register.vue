@@ -1,5 +1,4 @@
 <script lang="ts" setup>
-import { reactive, ref } from 'vue';
 import * as Yup from 'yup';
 import { Form, Field } from 'vee-validate';
 
@@ -8,14 +7,17 @@ import FormWrapper from '../../../components/FormWrapperStyled.vue';
 import Button from '../../../components/ButtonStyled.vue';
 import router from '../../../router/index';
 import { useAuthStore } from '../store/auth.store';
-import User from '../../../models/User.model';
-import Swal from 'vue-sweetalert2';
+import { useSwal } from '../../../helpers/swal';
+
 
 const schema = Yup.object().shape({
-  // firstName: Yup.string().required('First Name is required'),
-  // lastName: Yup.string().required('Last Name is required'),
-  // username: Yup.string().required('Username is required'),
-  // email: Yup.string().email("Format invalid").required('Email is required'),
+  firstname: Yup.string().required('First Name is required'),
+  lastname: Yup.string().required('Last Name is required'),
+  username: Yup.string().required('Username is required'),
+  email: Yup.string().email("Format invalid").required('Email is required'),
+  password: Yup.string().required('Password is required').min(6, 'Password must be at least 6 characters'),
+  passwordConfirmation: Yup.string()
+     .oneOf([Yup.ref('password'), null], 'Passwords must match')
   // password: Yup.string()
   //   .required('Password is required')
   //   .min(6, 'Password must be at least 6 characters'),
@@ -23,23 +25,24 @@ const schema = Yup.object().shape({
 
 
 const onSubmit = async (values:any) => {
-  const authStore = useAuthStore();  
+  const authStore = useAuthStore();    
   try {
-    await authStore.register(values);
-    await router.push('/login');
-    Swal.bind('sdofij');
+    const resp:any = await authStore.register(values);    
+    useSwal('Done!', resp.response ? resp.response : 'There is not a message','success', 'Ok');
+    setTimeout(() => {
+      router.push('/login');    
+    }, 2000);
+    
   }
-  catch(error) {
-    console.log("ERROR este error");
-    Swal.bind('error');
-  }
+  catch(error:any) {    
+    useSwal('Error!', error ? error : 'Something went wrong','error', 'Retry');
+  }     
 };
+
 </script>
 
-npx nx serve ui-vue
-
 <template>
-  <Title msg="Te damos la bienvenida a Airbnb"></Title>
+  <Title msg="Welcome to Airbnb"></Title>
 
   <form-wrapper>
     <Form
@@ -49,23 +52,23 @@ npx nx serve ui-vue
     >
       <div class="form-group">        
         <Field
-          name="firstName"
+          name="firstname"
           type="text"
           placeholder="First Name"
           class="form-control"
-          :class="{ 'is-invalid': errors.firstName }"
+          :class="{ 'is-invalid': errors.firstname }"
         />
-        <div class="invalid-feedback">{{ errors.firstName }}</div>
+        <div class="invalid-feedback">{{ errors.firstname }}</div>
       </div>
       <div class="form-group">        
         <Field
-          name="lastName"
+          name="lastname"
           type="text"
           placeholder="Last Name"
           class="form-control"
-          :class="{ 'is-invalid': errors.lastName }"
+          :class="{ 'is-invalid': errors.lastname }"
         />
-        <div class="invalid-feedback">{{ errors.lastName }}</div>
+        <div class="invalid-feedback">{{ errors.lastname }}</div>
       </div>
       <div class="form-group">        
         <Field
@@ -97,19 +100,29 @@ npx nx serve ui-vue
         />
         <div class="invalid-feedback">{{ errors.password }}</div>
       </div>
+      <div class="form-group">        
+        <Field
+          name="passwordConfirmation"
+          placeholder="Confirm password"
+          type="password"
+          class="form-control"
+          :class="{ 'is-invalid': errors.passwordConfirmation }"
+        />
+        <div class="invalid-feedback">{{ errors.passwordConfirmation }}</div>
+      </div>
      <div class="flex flex-col gap-y-4 mt-4">
         <Button
           color="primary"
           size="lg"
           type="submit"
-          text="Crear cuenta"
+          text="Create account"
           :disabled="isSubmitting"
         ></Button>
-        <Button
+        <Button          
           color="secondary"
           size="lg"
           to="/login"
-          text="¿Ya tienes cuenta?"
+          text="¿Already have an account?"
         ></Button>
       </div>
     </Form>

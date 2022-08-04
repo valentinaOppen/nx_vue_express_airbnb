@@ -1,29 +1,34 @@
-import { createUser } from '../services/auth.service';
-const User = require('../models/user.model');
+import { Response, Request, NextFunction } from 'express';
+import { RegisterUser, LoginUser } from '../services/auth.service';
 
-exports.postAddUser = async (req, res, next) => {  
-  const user = new User({      
-      firstName: req.body.firstName,
-      lastName: req.body.lastName,
-      userName: req.body.userName,
+const UserSchema = require('../models/user.schema');
+
+exports.postRegister = async (req:Request, res:Response, next:NextFunction) => {      
+  const user = new UserSchema({      
+      firstname: req.body.firstname,
+      lastname: req.body.lastname,
+      username: req.body.username,
       email: req.body.email,
       password: req.body.password
   })
-
+  
   try {
-    const res = await createUser(user);
-    res.josn({res});
+    const response = await RegisterUser(user);
+    res.json({response});
   } catch (error) {
     next(error);
   }
+}
 
-  // user.save()
-  // .then((result) => {
-  //   console.log("result", result);
-  //   res.send("User saved succesfully.")
-  // })
-  // .catch(err => {
-  //   console.log("ERR", err)
-  //   res.send("User couldn't be saved.", err)
-  // })
+exports.postAuthenticate = async (req:Request, res:Response, next:NextFunction) => {  
+  const loginUser = ({            
+      username: req.body.username,
+      password: req.body.password
+  })
+  try {
+    const response = await LoginUser(loginUser);
+    res.json({response});
+  } catch (error) {
+    next(error);
+  }
 }

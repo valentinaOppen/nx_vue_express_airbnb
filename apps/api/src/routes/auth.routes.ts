@@ -8,7 +8,8 @@ const authController = require('../app/controllers/auth.controller');
 
 const router:Router = express.Router();
 
-router.post('/add-user', authController.postAddUser);
+router.post('/register', authController.postRegister);
+router.post('/login', authController.postAuthenticate);
 
 // router.get('/login', authController.getLogin);
 

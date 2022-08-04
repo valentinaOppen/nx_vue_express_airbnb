@@ -1,6 +1,6 @@
 <template>
-<styled-button v-if="to" :href="to" :color="color" :size="size">{{text}}</styled-button>
-  <styled-button v-else :color="color" :size="size">{{text}}</styled-button>
+<styled-anchor v-if="to" :href="to" :color="color" :size="size">{{text}}</styled-anchor>
+<styled-button v-else :color="color" :size="size">{{text}}</styled-button>
 
 </template>
 
@@ -18,7 +18,7 @@ defineProps({
 const btnProps = { color: String, size: String  };
 
 const StyledButton = styled("button", btnProps)`
-font-size:  ${props => (props.size === 'lg' ? '1.4rem' : '1rem')};  
+  font-size:  ${props => (props.size === 'lg' ? '1.4rem' : '1rem')};  
   border: 2px solid palevioletred;
   border-radius: 3px;
   padding: 3px 10px;
@@ -27,6 +27,17 @@ font-size:  ${props => (props.size === 'lg' ? '1.4rem' : '1rem')};
   color: ${props => (props.color === 'primary' ? "white" : "var(--color-primary)")};
   width: ${props => (props.size === 'lg' ? '100%' : '30%')};  
 `;
+
+const StyledAnchor = styled("a", btnProps)`
+  font-size:  ${props => (props.size === 'lg' ? '1.4rem' : '1rem')};  
+  border: 2px solid palevioletred;
+  border-radius: 3px;
+  padding: 3px 10px;
+  margin: auto;
+  background: ${props => (props.color === 'primary' ? "var(--color-primary)" : "white")};
+  color: ${props => (props.color === 'primary' ? "white" : "var(--color-primary)")};
+  width: ${props => (props.size === 'lg' ? '100%' : '30%')};  
+`
 
 </script>
 

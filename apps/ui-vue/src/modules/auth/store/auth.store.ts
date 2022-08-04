@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { fetchWrapper} from '../../../helpers/fetch-wrappers';
 import router from '../../../router/index';
-import User from '../../../models/User.model';
+import { UserInterface, LoginUserInterface} from '@airbnb-vue-express/shared-models'
 
 const baseUrl = 'http://localhost:3333/user';
 
@@ -13,13 +13,19 @@ export const useAuthStore = defineStore({
     returnUrl: ''
   }),
   actions: {
-    async register(user:User) {
-      await fetchWrapper.post(`${baseUrl}/add-user`, user)
+    async register(user:UserInterface) {
+      return await fetchWrapper.post(`${baseUrl}/register`, user)
+    },
+    async login(loginUser: LoginUserInterface) {
+      const user = await fetchWrapper.post(`${baseUrl}/login`, loginUser);
+      this.user = user;
+      localStorage.setItem('user', JSON.stringify(user));
+      router.push(this.returnUrl || '/');
     },
     logout() {
       this.user = null;
       localStorage.removeItem('user');
-      router.push('/account/login');
+      router.push('/login');
     }
   }
 })

@@ -1,52 +1,93 @@
-<template>
-  <span class="login100-form-title p-b-41">
-        Ingresar
-    </span>
-    <form class="login100-form validate-form p-b-33 p-t-5"
-        @submit.prevent="onSubmit">
-
-        <div class="wrap-input100 validate-input" data-validate = "Enter username">
-            <input v-model="userForm.email" class="input100" type="text" placeholder="Correo" required>
-            <span class="focus-input100" data-placeholder="&#xe82a;"></span>
-        </div>
-
-        <div class="wrap-input100 validate-input" data-validate="Enter password">
-            <input v-model="userForm.password" class="input100" type="password" placeholder="Contraseña" required>
-            <span class="focus-input100" data-placeholder="&#xe80f;"></span>
-        </div>
-
-        <div class="container-login100-form-btn m-t-32">
-            <button class="login100-form-btn">
-                Login
-            </button>
-
-        </div>
-
-        <div class="container-login100-form-btn m-t-32">
-            <router-link :to="{ name: 'register' }">¿No tienes cuenta?</router-link>
-        </div>
-    </form>
-</template>
-
 <script lang="ts" setup>
 
-  import { ref } from 'vue';
+import * as Yup from 'yup';
+import { Form, Field } from 'vee-validate';
 
-  const userForm = ref({
-      email: 'prueba@gmail.com',
-      password: '123456',
-  })
+import Title from '../../../components/TitleStyled.vue';
+import FormWrapper from '../../../components/FormWrapperStyled.vue';
+import Button from '../../../components/ButtonStyled.vue';
+import router from '../../../router/index';
+import { useAuthStore } from '../store/auth.store';
+import { useSwal } from '../../../helpers/swal';
+import { LoginUserInterface } from '@airbnb-vue-express/shared-models';
 
-  const onSubmit = async() => {
-      console.log("SUB", userForm.value)
+
+
+const schema = Yup.object().shape({    
+  username: Yup.string().required('Username is required'),
+  password: Yup.string()
+    .required('Password is required')
+    .min(6, 'Password must be at least 6 characters'),
+});
+
+const onSubmit = async (values:any) => {
+  const authStore = useAuthStore();  
+  try {
+    const resp:any = await authStore.login(values);    
+    useSwal('Done!', resp.response ? resp.response : 'There is not a message','success', 'Ok');
+    setTimeout(() => {
+      router.push('/login');    
+    }, 2000);
+    
   }
+  catch(error:any) {    
+    useSwal('Error!', error ? error : 'Something went wrong','error', 'Retry');
+  } 
+}
 
 
-// import { defineComponent } from 'vue';
-
-// export default defineComponent({
-//   name: 'login',
-// });
 </script>
+
+
+  <template>
+  <Title msg="Welcome to Airbnb"></Title>
+
+  <form-wrapper>
+    <Form
+      @submit="onSubmit"
+      :validation-schema="schema"
+      v-slot="{ errors, isSubmitting }"
+    >     
+      <div class="form-group">        
+        <Field
+          placeholder="Username"
+          name="username"
+          type="text"
+          class="form-control"
+          :class="{ 'is-invalid': errors.username }"
+        />
+        <div class="invalid-feedback">{{ errors.username }}</div>
+      </div>     
+      <div class="form-group">        
+        <Field
+          name="password"
+          placeholder="Password"
+          type="password"
+          class="form-control"
+          :class="{ 'is-invalid': errors.password }"
+        />
+        <div class="invalid-feedback">{{ errors.password }}</div>
+      </div>
+      
+     <div class="flex flex-col gap-y-4 mt-4">
+        <Button
+          color="primary"
+          size="lg"
+          type="submit"
+          text="Login"
+          :disabled="isSubmitting"
+        ></Button>
+        <Button          
+          color="secondary"
+          size="lg"
+          to="/register"
+          text="¿Don't have an account?"
+        ></Button>
+      </div>
+    </Form>
+  </form-wrapper>
+</template>
+
+
 
 <style scoped></style>

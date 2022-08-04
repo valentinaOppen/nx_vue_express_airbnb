@@ -3,6 +3,8 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
+    "shared-models": "libs/shared-models",
+    "styled-components": "libs/styled-components",
     "ui-vue": "apps/ui-vue",
     "ui-vue-e2e": "apps/ui-vue-e2e",
     "vue-components": "libs/vue-components"
