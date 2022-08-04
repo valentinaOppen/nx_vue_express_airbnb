@@ -15,10 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@airbnb-vue-express/icons": ["libs/icons/src/index.ts"],
       "@airbnb-vue-express/shared-models": ["libs/shared-models/src/index.ts"],
       "@airbnb-vue-express/styled-components": [
         "libs/styled-components/src/index.ts"
       ],
+      "@airbnb-vue-express/ui-helpers": ["libs/ui-helpers/src/index.ts"],
       "@airbnb-vue-express/vue-components": ["libs/vue-components/src/index.ts"]
     }
   },

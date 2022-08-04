@@ -3,8 +3,10 @@
   "version": 2,
   "projects": {
     "api": "apps/api",
+    "icons": "libs/icons",
     "shared-models": "libs/shared-models",
     "styled-components": "libs/styled-components",
+    "ui-helpers": "libs/ui-helpers",
     "ui-vue": "apps/ui-vue",
     "ui-vue-e2e": "apps/ui-vue-e2e",
     "vue-components": "libs/vue-components"

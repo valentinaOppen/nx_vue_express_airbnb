@@ -2,6 +2,7 @@ import * as bcrypt from 'bcryptjs';
 import HttpException from '../models/http-exception.model';
 import { LoginUserInterface, UserInterface } from '@airbnb-vue-express/shared-models';
 
+
 const UserSchema = require('../models/user.schema');
 
 const checkUserUniqueness = async (user:UserInterface): Promise<void> => {
@@ -74,7 +75,7 @@ export const LoginUser = async (user: LoginUserInterface) : Promise<any> => {
 
   if (savedUser) {
     const match = await bcrypt.compare(password, savedUser.password);
-    if(match) return user;
+    if(match) return savedUser;
   }
 
   throw new HttpException(403, {
