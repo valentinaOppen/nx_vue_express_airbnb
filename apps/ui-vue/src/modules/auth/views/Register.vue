@@ -7,7 +7,8 @@ import FormWrapper from '../../../components/FormWrapperStyled.vue';
 import Button from '../../../components/ButtonStyled.vue';
 import router from '../../../router/index';
 import { useAuthStore } from '../store/auth.store';
-import { useSwal } from '../../../helpers/swal';
+// import { useSwal } from '../../../helpers/swal';
+import { useSwal } from '@airbnb-vue-express/ui-helpers'
 
 
 const schema = Yup.object().shape({
