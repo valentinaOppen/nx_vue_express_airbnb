@@ -5,7 +5,7 @@
 </script>
 
 <template>
-  <div class="bg-red-500 flex p-2 justify-between w-full">
+  <div class="bg-red-500 flex p-2 justify-between w-full h-14">
     <LogoSerempre></LogoSerempre>                
     <AvatarUser></AvatarUser>
   </div>
