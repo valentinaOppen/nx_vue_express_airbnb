@@ -5,5 +5,14 @@
     "types": ["webpack-env", "node"]
   },
   "exclude": ["**/*.spec.ts", "**/*.spec.tsx"],
-  "include": ["**/*.ts", "**/*.tsx", "**/*.vue", "../../libs/shared-models/src/index.ts", "../../libs/icons/src/index.ts", "../../libs/icons" ]
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "**/*.vue",
+    "../../libs/shared-models/src/index.ts",
+    "../../libs/icons/src/index.ts",
+    "../../libs/icons",
+    "../../libs/ui-helpers/src/lib/ui-helpers.ts",
+    "../../libs/ui-helpers/src/index.ts"
+  ]
 }
