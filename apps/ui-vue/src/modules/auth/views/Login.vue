@@ -71,13 +71,15 @@ const onSubmit = async (values:any) => {
       
      <div class="flex flex-col gap-y-4 mt-4">
         <Button
+          border
           color="primary"
           size="lg"
           type="submit"
           text="Login"
           :disabled="isSubmitting"
         ></Button>
-        <Button          
+        <Button 
+          border         
           color="secondary"
           size="lg"
           to="/register"

@@ -1,6 +1,6 @@
 <template>
-  <div class="bg-red-500 flex p-2 justify-between w-2/12">      
-    <img src="../assets/logo-serempre.svg" alt="" class="w-6/12">    
+  <div class="bg-red-500 flex p-1 justify-between h-full w-auto left-0">      
+    <img src="../assets/logo-serempre.svg" alt="" class="">    
   </div>
 </template>
 

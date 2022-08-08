@@ -19,19 +19,39 @@ import { useMapStore } from '../modules/map/map.store';
   const mapElement = ref<HTMLDivElement>();  
   const mapStore = useMapStore();      
   const { location, loading  } = storeToRefs(mapStore);      
+  const { setMap } = mapStore;
   
   const initMap = () => {    
     if(!mapElement.value) return;
+
     const map = new mapboxgl.Map({
       container: mapElement.value, // container ID
       style: 'mapbox://styles/mapbox/streets-v11', // style URL      
       //@ts-ignore
       center:  location.value, // starting position [lng, lat]
-      zoom: 9, // starting zoom
+      zoom: 12, // starting zoom
       // projection: 'globe' // display the map as a 3D globe
     });
+
+    const myLocationPopup = new mapboxgl.Popup()
+      //@ts-ignore
+      .setLngLat( location.value )
+      .setHTML(`
+        <h4>I'm here</h4>
+        <p>Actualmente en Alajuela</p>
+    `);
+    
+    const myLocationMarker = new mapboxgl.Marker()
+    //@ts-ignore
+      .setLngLat( location.value )
+      .setPopup( myLocationPopup )
+      .addTo( map );
+      setMap(map);
   }
+
   
+
+
   onMounted(async () => {      
     await mapStore.getInitialLocation();
     if(location ) initMap();    

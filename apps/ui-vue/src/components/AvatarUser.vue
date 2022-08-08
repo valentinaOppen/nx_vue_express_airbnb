@@ -1,7 +1,7 @@
 
 <template>
 
-  <div class="flex h-fit my-auto">            
+  <div class="flex h-full my-auto justify-end">            
     <div class="relative flex">      
 			<button @click='active = !active' class='focus:outline-none'>
         <div class="icons flex  border-solid border-white rounded-3xl w-14">          

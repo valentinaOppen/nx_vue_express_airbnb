@@ -7,3 +7,6 @@ export { UserIcon };
 
 import MenuIcon from "./MenuIcon.vue";
 export { MenuIcon };
+
+import SearchIcon from "./SearchIcon.vue";
+export { SearchIcon };

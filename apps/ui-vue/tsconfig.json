@@ -8,7 +8,7 @@
     "strict": true,
     "composite": true
   },
-  "include": [],
+  "include": ["./src/models/PlacesResponse.model.ts"],
   "files": [],
   "references": [
     {

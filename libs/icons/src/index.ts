@@ -1,2 +1,2 @@
-export {MenuIcon, UserIcon} from './lib/icons';
+export {MenuIcon, UserIcon, SearchIcon} from './lib/icons';
 

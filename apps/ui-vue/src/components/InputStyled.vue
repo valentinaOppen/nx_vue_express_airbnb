@@ -1,12 +1,14 @@
 <template>
-  <styled-input v-model="val" placeholder="val"/>  
+  <styled-input :placeholder="placeholder"/>  
 </template>
+
 
 <script lang="ts" setup>
 import styled from "vue3-styled-components";
-import { computed, reactive } from 'vue'
 
-const val = computed(()=> {0})
+defineProps({
+  placeholder: String
+})
 
 const StyledInput = styled.input`  
   font-size: 1.25em;
@@ -16,9 +18,14 @@ const StyledInput = styled.input`
   /* color: rgb(248 113 113); */
   border: solid 1px lightgrey;
   border-radius:10px;
+  outline: none !important;
   &:hover {
     box-shadow: 0px 0px 3px 0px rgb(248 113 113)
-  }
+  };
+  &:focus-visible {
+    /* box-shadow: 0px 0px 3px 0px rgb(248 113 113) */
+    outline: none !important;
+  };
 `;
 
 </script>
