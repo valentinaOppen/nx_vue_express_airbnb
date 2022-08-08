@@ -81,7 +81,7 @@ export const useMapStore = defineStore({
     async searchInitialPlace() {            
       this.loadingPlaces = true;
       this.places = [];
-      const resp = await searchReverseApi.get<PlacesResponse>(`/${ this.lng, this.lat }.json`, {
+      const resp = await searchReverseApi.get<PlacesResponse>(`/${ this.lng}, ${this.lat}.json`, {
         params: {
           proximity: this.location?.join(',')
         }

@@ -7,7 +7,7 @@ const createMarker = (location:any, map: any, dataLocation:any) => {
       //@ts-ignore
       .setLngLat( location )
       .setHTML(`
-        <p>${dataLocation.place_name}</p>
+        <p>${dataLocation?.place_name}</p>
     `);
     
     const marker = new mapboxgl.Marker()
