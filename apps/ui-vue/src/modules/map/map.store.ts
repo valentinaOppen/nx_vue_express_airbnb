@@ -4,6 +4,8 @@ import { useSwal } from '@airbnb-vue-express/ui-helpers';
 import { searchApi } from '../../apis/index';
 import { PlacesResponse, Feature, Language } from '../../models/PlacesResponse.model';
 import mapboxgl from 'mapbox-gl';
+import { searchReverseApi } from '../../apis/searchApi';
+import createMarker from '../../helpers/map-helpers';
 
 export interface MapState {
   lng: number,
@@ -31,47 +33,39 @@ export const useMapStore = defineStore({
     // loadingPlaces: (state) => state.places.length > 0 ? false : true,
   },
   actions: {
-    setPlaceMarkers(place: Feature[]) {
+    setPlaceMarkers(place: Feature) {      
+      this.markers?.forEach(marker => marker.remove());      
       this.markers = [];
-      const popup = new mapboxgl.Popup()
-      //@ts-ignore
-        .setLngLat([...place.center])
-        .setHTML(`
-          <h4>${ place[0].text }</h4>
-          <p>${ place[0].place_name }</p>
-        `);
       
-      const marker = new mapboxgl.Marker()
-        //@ts-ignore
-        .setLngLat([...place.center])
-        .setPopup(popup)
-        //@ts-ignore
-        .addTo(this.map)
+      if(!this.map) return;
 
-      this.markers = [marker];
+      this.markers = [createMarker(place.center, this.map, place)];
 
       // Clear polyline
-      if ( this.map?.getLayer('RouteString') ) {
-        this.map?.removeLayer('RouteString');
-        this.map?.removeSource('RouteString');
-        // state.distance = undefined;
-        // state.duration = undefined;
-    }
+    //   if ( this.map?.getLayer('RouteString') ) {
+    //     this.map?.removeLayer('RouteString');
+    //     this.map?.removeSource('RouteString');
+    //     state.distance = undefined;
+    //     state.duration = undefined;
+    //    }
 
     },
     setMap(map: mapboxgl.Map) {
-      this.map = map;
+      this.map = map;      
     },
+
     async getInitialLocation() {            
       await navigator.geolocation.getCurrentPosition(
-        (resp) => {          
+        (resp) => {                    
           this.lng = resp.coords.longitude,          
-          this.lat = resp.coords.latitude                  
+          this.lat = resp.coords.latitude              
+          // this.searchInitialPlace(`${this.lng}, ${this.lat}`); 
         },
         (err) => useSwal('Error in geolocation', "We couldn't find your location", 'error', 'Ok')
-      );
+      );    
       return;
     },
+
     async searchPlaces(query:string) {            
       this.loadingPlaces = true;
       this.places = [];
@@ -82,6 +76,19 @@ export const useMapStore = defineStore({
       })
       this.places = resp.data.features;
       this.loadingPlaces = false;
+    },   
+    
+    async searchInitialPlace() {            
+      this.loadingPlaces = true;
+      this.places = [];
+      const resp = await searchReverseApi.get<PlacesResponse>(`/${ this.lng, this.lat }.json`, {
+        params: {
+          proximity: this.location?.join(',')
+        }
+      })      
+      const dataLocation = resp.data.features.filter(x => x.place_type[0] === 'postcode');
+      createMarker([this.lng, this.lat], this.map, dataLocation[0]);
+      
     }   
   }
 })

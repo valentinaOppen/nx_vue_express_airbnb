@@ -11,16 +11,16 @@ const { setPlaceMarkers } = mapStore;
 const activePlace = ref('');
 
 watch(places, (newPlace:Feature[]) => {
-  activePlace.value = '';
-  setPlaceMarkers(newPlace);
+  activePlace.value = '';  
 });
 
 const onPlaceClicked = (place: Feature) => {
   activePlace.value = place.id;
   const [lng, lat] = place.center;
+  setPlaceMarkers(place);
   map.value?.flyTo({
     center: [ lng, lat ],
-    zoom: 12
+    zoom: 10
   });
 };
 </script>

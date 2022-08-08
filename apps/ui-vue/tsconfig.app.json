@@ -9,6 +9,7 @@
     "**/*.ts",
     "**/*.tsx",
     "**/*.vue",
+    "../ui-vue/src/helpers/map-helpers.ts",
     "../../libs/shared-models/src/index.ts",
     "../../libs/icons/src/index.ts",
     "../../libs/icons",

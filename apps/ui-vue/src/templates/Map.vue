@@ -15,11 +15,12 @@ import { storeToRefs } from "pinia";
 
 import { onMounted, ref, watch } from 'vue';
 import { useMapStore } from '../modules/map/map.store';
+import createMarker from '../helpers/map-helpers';
   
   const mapElement = ref<HTMLDivElement>();  
   const mapStore = useMapStore();      
   const { location, loading  } = storeToRefs(mapStore);      
-  const { setMap } = mapStore;
+  const { setMap, searchInitialPlace } = mapStore;
   
   const initMap = () => {    
     if(!mapElement.value) return;
@@ -29,27 +30,14 @@ import { useMapStore } from '../modules/map/map.store';
       style: 'mapbox://styles/mapbox/streets-v11', // style URL      
       //@ts-ignore
       center:  location.value, // starting position [lng, lat]
-      zoom: 12, // starting zoom
+      zoom: 10, // starting zoom
       // projection: 'globe' // display the map as a 3D globe
     });
 
-    const myLocationPopup = new mapboxgl.Popup()
-      //@ts-ignore
-      .setLngLat( location.value )
-      .setHTML(`
-        <h4>I'm here</h4>
-        <p>Actualmente en Alajuela</p>
-    `);
-    
-    const myLocationMarker = new mapboxgl.Marker()
-    //@ts-ignore
-      .setLngLat( location.value )
-      .setPopup( myLocationPopup )
-      .addTo( map );
-      setMap(map);
+    // const marker = createMarker(location.value, map);
+    setMap(map);
+    searchInitialPlace();
   }
-
-  
 
 
   onMounted(async () => {      
