@@ -7,8 +7,7 @@ import FormWrapper from '../../../components/FormWrapperStyled.vue';
 import Button from '../../../components/ButtonStyled.vue';
 import router from '../../../router/index';
 import { useAuthStore } from '../store/auth.store';
-// import { useSwal } from '../../../helpers/swal';
-import { useSwal } from '@airbnb-vue-express/ui-helpers'
+import { swalSuccess, swalError } from '@airbnb-vue-express/ui-helpers'
 
 
 const schema = Yup.object().shape({
@@ -28,15 +27,15 @@ const schema = Yup.object().shape({
 const onSubmit = async (values:any) => {
   const authStore = useAuthStore();    
   try {
-    const resp:any = await authStore.register(values);    
-    useSwal('Done!', resp.response ? resp.response : 'There is not a message','success', 'Ok');
+    const resp:any = await authStore.register(values);        
+    swalSuccess('Done!', resp.response ? resp.response : 'There is not a message');
     setTimeout(() => {
       router.push('/login');    
     }, 2000);
     
   }
   catch(error:any) {    
-    useSwal('Error!', error ? error : 'Something went wrong','error', 'Retry');
+    swalError(error);
   }     
 };
 

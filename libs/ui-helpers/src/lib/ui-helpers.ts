@@ -15,3 +15,16 @@ export const useSwal = (
 };
 
 
+export const swalError = (error:any, title?:string) => {
+  useSwal(title ? title : 'Error!', error ? error : 'Something went wrong','error', 'Retry');
+  
+}
+
+export const swalSuccess = (title:string, msg: string) => {
+  useSwal('Saved!', msg, 'success', 'Ok');      
+}
+
+export const swalInfo = (title:string, msg:string) => {
+  useSwal(title, msg, 'info', 'Ok');
+}
+

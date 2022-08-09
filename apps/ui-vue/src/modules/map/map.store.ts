@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
-import { useSwal } from '@airbnb-vue-express/ui-helpers';
-// import searchApi from '../../../../api/src/app/api/searchApi';
+import { swalError } from '@airbnb-vue-express/ui-helpers';
 import { searchApi } from '../../apis/index';
 import { PlacesResponse, Feature, Language } from '../../models/PlacesResponse.model';
 import mapboxgl from 'mapbox-gl';
@@ -61,7 +60,7 @@ export const useMapStore = defineStore({
           this.lat = resp.coords.latitude              
           // this.searchInitialPlace(`${this.lng}, ${this.lat}`); 
         },
-        (err) => useSwal('Error in geolocation', "We couldn't find your location", 'error', 'Ok')
+        (err) => swalError("We couldn't find your location", 'Error in geolocation')
       );    
       return;
     },

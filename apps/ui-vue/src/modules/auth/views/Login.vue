@@ -6,10 +6,9 @@ import { Form, Field } from 'vee-validate';
 import Title from '../../../components/TitleStyled.vue';
 import FormWrapper from '../../../components/FormWrapperStyled.vue';
 import Button from '../../../components/ButtonStyled.vue';
-import router from '../../../router/index';
+
 import { useAuthStore } from '../store/auth.store';
-import { useSwal } from '@airbnb-vue-express/ui-helpers'
-import { LoginUserInterface } from '@airbnb-vue-express/shared-models';
+import { swalError } from '@airbnb-vue-express/ui-helpers'
 
 
 
@@ -23,15 +22,10 @@ const schema = Yup.object().shape({
 const onSubmit = async (values:any) => {
   const authStore = useAuthStore();  
   try {
-    await authStore.login(values);
-    // useSwal('Done!', resp?.response ? resp.response : 'There is not a message','success', 'Ok');
-    // setTimeout(() => {
-    //   router.push('/login');    
-    // }, 2000);
-    // });            
+    await authStore.login(values);    
   }
   catch(error:any) {    
-    useSwal('Error!', error ? error : 'Something went wrong','error', 'Retry');
+    swalError(error);
   } 
 }
 

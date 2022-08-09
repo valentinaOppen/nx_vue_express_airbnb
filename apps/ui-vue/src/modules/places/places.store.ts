@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia';
-import { useSwal } from '@airbnb-vue-express/ui-helpers';
 import { PlaceInterface } from '@airbnb-vue-express/shared-models';
 import { fetchWrapper } from '../../helpers/fetch-wrappers';
 

@@ -16,7 +16,7 @@
 
 <script lang="ts" setup>  
   import { ref } from 'vue';
-  import { useSwal } from '@airbnb-vue-express/ui-helpers'
+  import { swalError, swalInfo } from '@airbnb-vue-express/ui-helpers'
   import { useAuthStore } from '../modules/auth/store/auth.store';
       
   const favorites = ref(false);
@@ -27,12 +27,12 @@
       await useAuthStore().logout()    
     }
     catch(error:any) {    
-      useSwal('Error!', error ? error : 'Something went wrong','error', 'Retry');
+      swalError(error);
     } 
   }
 
   const inProgress = () => {    
-    useSwal('Under construction!', 'Please wait until next version :)', 'info', 'Ok');
+    swalInfo('Under construction!', 'Please wait until next version :)');
   }
 
   

@@ -7,7 +7,7 @@ import { storeToRefs } from 'pinia';
 import { Feature } from '../models/PlacesResponse.model';
 import { ref, watch, onMounted, computed } from 'vue';
 import { usePlacesStore } from '../modules/places/places.store';
-import { useSwal } from '@airbnb-vue-express/ui-helpers'
+import { swalSuccess, swalError } from '@airbnb-vue-express/ui-helpers'
 import { useAuthStore } from '../modules/auth/store/auth.store';
 
 const mapStore = useMapStore();
@@ -49,15 +49,15 @@ const handleGetFavorites = async () => {
   try {    
       await getFavorites(user.value.response._id)     
     } catch (error) {
-      useSwal('Error!', error ? error : 'Something went wrong','error', 'Retry');
+      swalError(error);
     }  
 }
 
 const handleToggleFavorite = async (place: Feature) => {    
     saveFavorite({lng: place.center[0], lat: place.center[1], name: place.place_name, userId: user.value.response._id}).then((resp) => {      
-      useSwal('Saved!', resp.response, 'success', 'Ok');      
+      swalSuccess('Saved', resp.response)      
     }).catch((error) => {
-      useSwal('Error!', error ? error : 'Something went wrong','error', 'Retry');
+      swalError(error);
     }); 
 };
 
@@ -66,29 +66,9 @@ onMounted(async () => {
 })  
 
 
-
 </script>
 
 <template>
-  <!-- <div
-    v-if="loadingPlaces || loadingPlaces"
-    class="text-center absolute z-10 inset-1/3 w-4/12 bg-white h-60 rounded-lg"
-  >
-    <div class="flex flex-col text-center mt-10">
-      Loading Places
-      <span
-        class="spinner-border spinner-border-lg align-center mx-auto my-10"
-      ></span>
-    </div>
-  </div> -->
-
-  <!-- <div  class="text-center z-10  inset-1/3  w-1/4 bg-white h-60 rounded-lg">
-    <div class="flex flex-col text-center mt-10">
-      Loading current location
-      <span class="spinner-border spinner-border-lg align-center mx-auto my-10"></span>
-    </div>
-  </div> -->
-
   <ul class="list-group w-1/4 mt-10 ml-10 text-xs">
     <li v-if="loadingPlaces || loadingFavorites" class="list-group-item list-group-item-action flex flex-col">
       Loading places
@@ -99,8 +79,7 @@ onMounted(async () => {
       class="list-group-item list-group-item-action"
       :class="{ active: place.id === activePlace }"
       :key="place.id"
-    >
-      <!-- <h5>{{ place.text }}</h5> -->
+    >      
       <div class="flex justify-between">
         <div @click="onPlaceClicked(place)" class="my-1 cursor-pointer">
           {{ place.place_name }}
@@ -116,19 +95,7 @@ onMounted(async () => {
             ><FavoriteIcon :color="place.color"></FavoriteIcon
           ></Button>
         </div>
-      </div>
-      <!-- <div align="right">
-        <button
-          class="btn btn-outline-primary btn-sm"
-          :class="
-            place.id === activePlace
-              ? 'btn-outline-light'
-              : 'btn-outline-primary'
-          "
-        >
-          Direcciones
-        </button>
-      </div> -->
+      </div>      
     </li>
   </ul>
 </template>
