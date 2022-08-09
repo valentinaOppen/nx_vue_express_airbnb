@@ -6,21 +6,27 @@ import { fetchWrapper } from '../../helpers/fetch-wrappers';
 const baseUrl = 'http://localhost:3333/places';
 
 export interface PlacesState {
-  favorites: PlaceInterface[]
+  favorites: PlaceInterface[],
+  loadingFavorites: boolean
 }
 
 export const usePlacesStore = defineStore({
   id: 'places', 
   state: () : PlacesState => ({
-    favorites: []
+    favorites: [],
+    loadingFavorites: false
   }),
   actions: {
     async saveFavorite(place: PlaceInterface) {
+      this.favorites = [...this.favorites, place];
       return await fetchWrapper.post(`${baseUrl}/favorite`, place)
-    },
-    
+    },    
     async getFavorites(userId: string) {
-      return await fetchWrapper.get(`${baseUrl}/favorites?userId=${userId}`);
+      this.loadingFavorites = true;
+      const resp = await fetchWrapper.get(`${baseUrl}/favorites?userId=${userId}`);
+      this.favorites = resp;
+      this.loadingFavorites = false;
+      return;
     }
   }
 

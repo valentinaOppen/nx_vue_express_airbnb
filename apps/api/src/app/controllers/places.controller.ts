@@ -19,13 +19,13 @@ exports.postFavorite = async (req:Request, res:Response, next:NextFunction) => {
   }
 };
 
-exports.getFavorite = async (req:Request, res:Response, next:NextFunction) => {      
-  const userId = req.body.userId;
+exports.getFavorite = async (req:Request, res:Response, next:NextFunction) => {        
+  const userId = req.query.userId.toString();
   try {
     const response = await GetFavoritesPlaces(userId);
     res.json(response);
   }
-  catch(error) {
+  catch(error) {    
     next(error);
   }
   

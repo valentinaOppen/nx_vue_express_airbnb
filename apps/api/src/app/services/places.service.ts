@@ -26,18 +26,28 @@ export const SaveFavoritePlace = async (place: PlaceInterface): Promise<any> => 
     throw new HttpException(422, { errors: ["User ID can't be blank"] });
   }
 
-  const favorite = new FavoriteSchema({    
-    lng: place.lng,
-    lat: place.lat,
-    name: place.name,
-    userId: place.userId
-  }).save();
+  try { 
+    const favorite = new FavoriteSchema({    
+      lng: place.lng,
+      lat: place.lat,
+      name: place.name,
+      userId: place.userId
+    }).save(function(err, fav) {
+      if(err) {        
+        throw new HttpException(400, {errors: [err]});
+      } 
+      else return "Place saved successfully";  
+    });    
+  }
+  catch(error) {
+    throw new HttpException(400, {errors: [error]});
+  }
 
-  return "Place saved successfully";
+  
 
 } 
 
-export const GetFavoritesPlaces = async (userId: String) => {  
+export const GetFavoritesPlaces = async (userId: String) => {   
   const favorites = await FavoriteSchema.find({userId: userId});
   return favorites;
 }
