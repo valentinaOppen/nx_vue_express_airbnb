@@ -28,12 +28,7 @@
 <template>
   <div class="flex w-8/12 h-full relative m-auto"> 
     <Input v-model="searchTerm" placeholder="Search places" class="h-full m-auto"></Input>
-    <Button class="absolute right-4 top-1"
-      color="transparent"
-      size="sm"
-      type="button"
-      text=""
-    ><SearchIcon></SearchIcon></Button>
+    <div class="absolute right-8 top-1 text-red-500"><SearchIcon></SearchIcon></div>
   </div>
 
 </template>

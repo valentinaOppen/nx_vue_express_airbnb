@@ -8,7 +8,7 @@ export const fetchWrapper = {
 };
 
 function request(method:string) {
-    return (url:string, body:any) => {
+    return (url:string, body?:any) => {
         const requestOptions = {
             method,
             headers: authHeader(url)

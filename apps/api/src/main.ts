@@ -40,6 +40,8 @@ app.get('/api', (req, res) => {
 
 const authRoutes:Router = require('./routes/auth.routes');
 app.use('/user', authRoutes);
+const placesRoutes:Router = require('./routes/places.routes');
+app.use('/places', placesRoutes);
 
 /* eslint-disable */
 app.use((err: Error | HttpException, req: Request, res: Response, next: NextFunction) => {

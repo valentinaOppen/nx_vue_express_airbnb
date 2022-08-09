@@ -33,8 +33,7 @@ import createMarker from '../helpers/map-helpers';
       zoom: 10, // starting zoom
       // projection: 'globe' // display the map as a 3D globe
     });
-
-    // const marker = createMarker(location.value, map);
+    
     setMap(map);
     searchInitialPlace();
   }
