@@ -1,7 +1,7 @@
 
 <template>  
-  <div class="w-100 map-element" :class="[loading ? 'opacity-30 z-0' : '']" ref="mapElement"></div>  
-  <div v-if="loading" class="text-center absolute z-10  inset-1/3  w-4/12 bg-white h-60 rounded-lg">
+  <div class="w-100 map-element" :class="[loadingLocation ? 'opacity-30 z-0' : '']" ref="mapElement"></div>  
+  <div v-if="loadingLocation" class="text-center absolute z-10  inset-1/3  w-4/12 bg-white h-60 rounded-lg">
     <div class="flex flex-col text-center mt-10">
       Loading current location
       <span class="spinner-border spinner-border-lg align-center mx-auto my-10"></span>
@@ -19,7 +19,7 @@ import createMarker from '../helpers/map-helpers';
   
   const mapElement = ref<HTMLDivElement>();  
   const mapStore = useMapStore();      
-  const { location, loading  } = storeToRefs(mapStore);      
+  const { location, loadingLocation  } = storeToRefs(mapStore);      
   const { setMap, searchInitialPlace } = mapStore;
   
   const initMap = () => {    

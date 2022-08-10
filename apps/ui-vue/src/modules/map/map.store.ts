@@ -10,6 +10,7 @@ export interface MapState {
   lng: number,
   lat: number,
   places: Array<Feature>,
+  loadingLocation: boolean,
   loadingPlaces: boolean,
   map: mapboxgl.Map | undefined,
   markers: mapboxgl.Marker[] | undefined
@@ -22,32 +23,20 @@ export const useMapStore = defineStore({
     lng: 0,
     lat: 0,
     places: [],
+    loadingLocation: false,
     loadingPlaces: false,
     map: undefined,
     markers: undefined
   }),
   getters: {
     location: (state) => [state.lng, state.lat],
-    loading: (state) => state.lng && state.lat ? false : true,
-    // loadingPlaces: (state) => state.places.length > 0 ? false : true,
   },
   actions: {
     setPlaceMarkers(place: Feature) {      
       this.markers?.forEach(marker => marker.remove());      
       this.markers = [];
-      
       if(!this.map) return;
-
       this.markers = [createMarker(place.center, this.map, place)];
-
-      // Clear polyline
-    //   if ( this.map?.getLayer('RouteString') ) {
-    //     this.map?.removeLayer('RouteString');
-    //     this.map?.removeSource('RouteString');
-    //     state.distance = undefined;
-    //     state.duration = undefined;
-    //    }
-
     },
     setMap(map: mapboxgl.Map) {
       this.map = map;      
@@ -58,7 +47,6 @@ export const useMapStore = defineStore({
         (resp) => {                    
           this.lng = resp.coords.longitude,          
           this.lat = resp.coords.latitude              
-          // this.searchInitialPlace(`${this.lng}, ${this.lat}`); 
         },
         (err) => swalError("We couldn't find your location", 'Error in geolocation')
       );    
@@ -77,8 +65,8 @@ export const useMapStore = defineStore({
       this.loadingPlaces = false;
     },   
     
-    async searchInitialPlace() {            
-      this.loadingPlaces = true;
+    async searchInitialPlace() {   
+      this.loadingLocation = true;               
       this.places = [];
       const resp = await searchReverseApi.get<PlacesResponse>(`/${ this.lng}, ${this.lat}.json`, {
         params: {
@@ -87,7 +75,7 @@ export const useMapStore = defineStore({
       })      
       const dataLocation = resp.data.features.filter(x => x.place_type[0] === 'postcode');
       createMarker([this.lng, this.lat], this.map, dataLocation[0]);
-      
+      this.loadingLocation = false;
     }   
   }
 })
